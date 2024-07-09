@@ -27,7 +27,7 @@ jobs:
 
     - name: Commit and push changes
       env:
-        GITHUB_TOKEN: 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
+        GITHUB_TOKEN: ${{ secrets.PAT }}
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
