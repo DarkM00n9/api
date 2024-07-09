@@ -14,6 +14,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0 # Fetch the entire history for all branches and tags
 
     - name: Get latest release
       id: get_release
@@ -32,7 +34,7 @@ jobs:
 
     - name: Pull latest changes with rebase
       run: |
-        git pull origin main --rebase
+        git pull origin main --rebase || (echo "Rebase failed, retrying after reset"; git reset --hard origin/main && git pull origin main --rebase)
 
     - name: Commit and push changes
       env:
@@ -40,3 +42,4 @@ jobs:
       run: |
         git add docs/latest-release.json
         git commit -m 'Update latest release'
+        git push https://github.com/darkm00n9/dvmm.git HEAD:main || (echo "Push failed, retrying after force push"; git push --force https://github.com/darkm00n9/dvmm.git HEAD:main)
