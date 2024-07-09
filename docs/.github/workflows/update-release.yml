@@ -42,4 +42,9 @@ jobs:
       run: |
         git add docs/latest-release.json
         git commit -m 'Update latest release'
-        git push https://github.com/darkm00n9/dvmm.git HEAD:main || (echo "Push failed, retrying after force push"; git push --force https://github.com/darkm00n9/dvmm.git HEAD:main)
+        git push https://github.com/DarkM00n9/DVMM.git HEAD:main || (echo "Push failed, retrying after force push"; git push --force https://github.com/DarkM00n9/DVMM.git HEAD:main)
+
+    - name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v4
+      with:
+        folder: docs
