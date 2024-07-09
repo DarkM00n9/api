@@ -25,12 +25,19 @@ jobs:
         mkdir -p docs
         mv latest-release.json docs/latest-release.json
 
+    - name: Configure git
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+    - name: Pull latest changes
+      run: |
+        git pull origin main --rebase
+
     - name: Commit and push changes
       env:
         GITHUB_TOKEN: ${{ secrets.PAT }}
       run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git add docs/latest-release.json
         git commit -m 'Update latest release'
-        git push https://github.com/darkm00n9/api.git HEAD:main
+        git push https://github.com/darkm00n9/dvmm.git HEAD:main
