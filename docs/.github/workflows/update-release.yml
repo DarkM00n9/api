@@ -42,14 +42,14 @@ jobs:
       run: |
         git add docs/latest-release.json
         git commit -m 'Update latest release'
-        git push https://github.com/DarkM00n9/DVMM.git HEAD:main || (echo "Push failed, retrying after force push"; git push --force https://github.com/DarkM00n9/DVMM.git HEAD:main)
+        git push https://github.com/DarkM00n9/api.git HEAD:main || (echo "Push failed, retrying after force push"; git push --force https://github.com/DarkM00n9/api.git HEAD:main)
 
     - name: Delete old artifacts
       run: |
-        artifact_id=$(curl -s -H "Authorization: token ${{ secrets.PAT }}" "https://api.github.com/repos/DarkM00n9/DVMM/actions/artifacts" | jq -r '.artifacts[] | select(.name=="github-pages") | .id')
+        artifact_id=$(curl -s -H "Authorization: token ${{ secrets.PAT }}" "https://api.github.com/repos/DarkM00n9/api/actions/artifacts" | jq -r '.artifacts[] | select(.name=="github-pages") | .id')
         if [ -n "$artifact_id" ]; then
           echo "Deleting old artifact with ID: $artifact_id"
-          curl -X DELETE -H "Authorization: token ${{ secrets.PAT }}" "https://api.github.com/repos/DarkM00n9/DVMM/actions/artifacts/$artifact_id"
+          curl -X DELETE -H "Authorization: token ${{ secrets.PAT }}" "https://api.github.com/repos/DarkM00n9/api/actions/artifacts/$artifact_id"
         else
           echo "No old artifacts found to delete"
         fi
