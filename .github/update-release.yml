@@ -1,0 +1,36 @@
+name: Update Release
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 0 * * *' # This runs every day at midnight
+
+jobs:
+  update-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Get latest release
+      id: get_release
+      run: |
+        curl -s https://api.github.com/repos/DarkM00n9/DVMM/releases/latest > latest-release.json
+
+    - name: Update release file
+      run: |
+        mkdir -p docs
+        mv latest-release.json docs/latest-release.json
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add docs/latest-release.json
+        git commit -m 'Update latest release'
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
